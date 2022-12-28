@@ -33,19 +33,19 @@ def buy_sell_function(data):
             buy_list.append(data['Close'][i])
             sell_list.append(np.nan)
             flag_long = True
-        # elif flag_short == True and data['ema5'][i] > data['ema21'][i]:
-        #     sell_list.append(data['Close'][i])
-        #     buy_list.append(np.nan)
-        #     flag_short = False
-        # elif flag_long == True and data['ema5'][i] < data['ema21'][i]:
-        #     sell_list.append(data['Close'][i])
-        #     buy_list.append(np.nan)
-        #     flag_long = False
+        elif flag_short == True and data['ema5'][i] > data['ema21'][i]:
+            sell_list.append(data['Close'][i])
+            buy_list.append(np.nan)
+            flag_short = False
+        elif flag_long == True and data['ema5'][i] < data['ema21'][i]:
+            sell_list.append(data['Close'][i])
+            buy_list.append(np.nan)
+            flag_long = False
         else:
             buy_list.append(np.nan)
             sell_list.append(np.nan)
     
-    return (buy_list, sell_list)
+    return (buy_list, sell_list,flag_long,flag_short)
 def emacross(data):
     #print("check")
     return data['ema5'] > data['ema21'] and data['ema21'] > data['ema55']
@@ -83,6 +83,8 @@ def Loaddata():
             data['Sell'] = buy_sell_function(data)[1]
             fresh_buy = data.iloc[-1]['Buy']
             fresh_sell = data.iloc[-1]['Sell']
+            print(fresh_buy)
+            print(fresh_sell)
             if fresh_buy > 0:
                 print("EMA cross fresh Buy : ", data.iloc[-1]['Symbol'])
                 with open("Buy_file.txt", "a") as f:
