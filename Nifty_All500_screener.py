@@ -15,9 +15,14 @@ end_date=date.today()
 def Importdata():
     for stock in stocks:
         rawdata = get_history(symbol=stock,start=start_date,end=end_date)
-        file_name = 'Nifty_All500/{}.csv'.format(stock)
+        file_name = 'Nifty_All500/daily/{}.csv'.format(stock)
+        file_name1 = 'Nifty_All500/weekly/{}.csv'.format(stock)
         df = pd.DataFrame(rawdata)
         df.to_csv(file_name,encoding='utf-8')
+        rawdata.index = pd.to_datetime(rawdata.index)
+        acc = rawdata.resample('W').agg({'High': 'max', 'Low': 'min', 'Close': 'last'})
+        wf = pd.DataFrame(acc)
+        wf.to_csv(file_name1,encoding='utf-8')
         print(stock)
 def buy_sell_function(data):
     buy_list = []
@@ -53,7 +58,7 @@ def emacross(data):
 def Loaddata():
     for stock in stocks:
         try:
-            data = pd.read_csv('Nifty_All500/{}.csv'.format(stock)) 
+            data = pd.read_csv('Nifty_All500/daily/{}.csv'.format(stock)) 
             print(stock) 
             print("###################################################################################################")
             close = data.iloc[-1]['Close']

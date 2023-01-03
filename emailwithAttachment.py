@@ -84,7 +84,7 @@ def gmail_create_draft_with_attachment():
         )
 
         # attachment
-        attachment_filename = 'C:\\Users\\muniv\\Desktop\\python\\eod\\photo.png'
+        attachment_filename = 'C:\\Users\\muniv\\Desktop\\python\\eod\\photo1.jpg'
         # guessing the MIME type
         type_subtype, _ = mimetypes.guess_type(attachment_filename)
         print(type_subtype)
