@@ -26,6 +26,10 @@ def Importdata():
 def buy_sell_function(data):
     buy_list = []
     sell_list = []
+    fresh_long =[]
+    exit_long = []
+    fresh_sell = []
+    exit_sell = []
     flag_long = False
     flag_short = False
     for i in range(0,len(data)):
@@ -33,23 +37,32 @@ def buy_sell_function(data):
             buy_list.append(np.nan)
             sell_list.append(data['Close'][i])
             flag_short = True
+            fresh_sell.append("fresh sell")
+            fresh_long.append(np.nan)
         elif data['ema21'][i] > data['ema55'][i] and data['ema21'][i] < data['ema5'][i] and flag_short == False and flag_long == False:
             buy_list.append(data['Close'][i])
             sell_list.append(np.nan)
             flag_long = True
+            fresh_long.append("fresh long")
+            fresh_sell.append(np.nan)
         elif flag_short == True and data['ema5'][i] > data['ema21'][i]:
             sell_list.append(np.nan)
             buy_list.append(data['Close'][i])
             flag_short = False
+            exit_sell.append("Exit sell")
         elif flag_long == True and data['ema5'][i] < data['ema21'][i]:
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_long = False
+            exit_long.append("Exit long")
         else:
             buy_list.append(np.nan)
             sell_list.append(np.nan)
-    
-    return (buy_list, sell_list)
+            fresh_long.append(np.nan)
+            fresh_sell.append(np.nan)
+            exit_long.append(np.nan)
+            exit_sell.append(np.nan)
+    return (buy_list, sell_list, fresh_long, exit_long, fresh_sell, exit_sell)
 
 def week_number_fun(data):
     # buy_list = []
@@ -119,7 +132,10 @@ def Loaddata():
             buy_sell_function(data)
             data['Buy'] =  buy_sell_function(data)[0]
             data['Sell'] = buy_sell_function(data)[1]
-           
+            data['Fresh_long'] = buy_sell_function(data)[2]
+            data['Exit_long'] = buy_sell_function(data)[3]
+            data['Fresh_sell'] = buy_sell_function(data)[4]
+            data['Exit_sell'] = buy_sell_function(data)[5]
             
 
             
