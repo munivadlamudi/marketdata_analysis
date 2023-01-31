@@ -43,7 +43,7 @@ def gmail_create_draft_with_attachment():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'C:\\Users\\muniv\\Desktop\\python\\eod\\credentials.json', SCOPES)
+                'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -53,7 +53,7 @@ def gmail_create_draft_with_attachment():
     try:
         # Call the Gmail API
         service = build('gmail', 'v1', credentials=creds)
-        results = service.users().labels().list(userId='muni.market7@gmail.com').execute()
+        results = service.users().labels().list(userId='muni.vadlamudi4@gmail.com').execute()
         labels = results.get('labels', [])
 
         if not labels:
@@ -70,13 +70,22 @@ def gmail_create_draft_with_attachment():
     try:
         # create gmail api client
         service = build('gmail', 'v1', credentials=creds)
-        mime_message = EmailMessage()
+        results = service.users().labels().list(userId='muni.vadlamudi4@gmail.com').execute()
+        labels = results.get('labels', [])
 
+        if not labels:
+            print('No labels found.')
+            return
+        print('Labels:')
+        for label in labels:
+            print(label['name'])
+        mime_message = EmailMessage()
+        #print(mime_message)
         # headers
         mime_message['To'] = 'muni.vadlamudi@gmail.com'
-        mime_message['From'] = 'muni.market7@gmail.com'
+        mime_message['From'] = 'muni.vadlamudi4@gmail.com'
         mime_message['Subject'] = 'sample with attachment'
-
+        print(mime_message)
         # text
         mime_message.set_content(
             'Hi, this is automated mail with attachment.'
@@ -84,28 +93,32 @@ def gmail_create_draft_with_attachment():
         )
 
         # attachment
-        attachment_filename = 'C:\\Users\\muniv\\Desktop\\python\\eod\\photo1.jpg'
+        attachment_filename = 'photo1.jpg'
         # guessing the MIME type
         type_subtype, _ = mimetypes.guess_type(attachment_filename)
         print(type_subtype)
         maintype, subtype = type_subtype.split('/')
-
+        print(subtype)
         with open(attachment_filename, 'rb') as fp:
             attachment_data = fp.read()
         mime_message.add_attachment(attachment_data, maintype, subtype)
-
+        message_text=' This is test email'
+        mime_message = MIMEText(message_text)
+        print("$%$%$%$%$%")
         encoded_message = base64.urlsafe_b64encode(mime_message.as_bytes()).decode()
-
+        print("****************", encoded_message)
         create_draft_request_body = {
             'message': {
                 'raw': encoded_message
             }
         }
+        print("after draft")
         # pylint: disable=E1101
-        draft = service.users().drafts().create(userId="muni.market7@gmail.com",
-                                                body=create_draft_request_body)\
-            .execute()
+        #draft = service.users().drafts().create(userId="muni.vadlamudi4@gmail.com",body='this is test draft').execute()
+        draft = service.users().messages().send(userId="muni.vadlamudi4@gmail.com",body='this is test draft').execute()
+        print("TTTTTTTTTT")
         print(F'Draft id: {draft["id"]}\nDraft message: {draft["message"]}')
+        print("^^^^^^^^^^^")
     except HttpError as error:
         print(" $$$$$$$$$$$$ You are in exception $$$$$$$$$$$$$$$$$$$$")
         print(F'An error occurred: {error}')
@@ -162,7 +175,7 @@ def main1():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'C:\\Users\\muniv\\Desktop\\python\\eod\\credentials.json', SCOPES)
+                'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -173,7 +186,7 @@ def main1():
         service = build('gmail', 'v1', credentials=creds)
         results = service.users().labels().list(userId='me').execute()
         labels = results.get('labels', [])
-
+        print("checking for gmail lables &&&&&&&&&&&&&&&&&&&&&&&")
         if not labels:
             print('No labels found.')
             return

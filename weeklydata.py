@@ -24,6 +24,7 @@ def Importdata():
         print(stock)
 
 def buy_sell_function(data):
+    print(" you are in buy sell function")
     buy_list = []
     sell_list = []
     flag_long = False
@@ -104,18 +105,18 @@ def Loaddata():
 
             
             result = data1.dtypes
-            print(result)
+            #print(result)
+            
+
+            buy_sell_function(data)
+            data['Buy'] =  buy_sell_function(data)[0]
+            data['Sell'] = buy_sell_function(data)[1]
             #writting new file for daily data in /data/output
             ou = pd.DataFrame(data)
             ou.to_csv(out_file_name1,encoding='utf-8')
            #writting new file for weekly data in /data/output_weekly
             ouw = pd.DataFrame(data1)
             ouw.to_csv(out_file_name2,encoding='utf-8')
-
-            buy_sell_function(data)
-            data['Buy'] =  buy_sell_function(data)[0]
-            data['Sell'] = buy_sell_function(data)[1]
-           
             
 
             #cci34 =  talib.cci(data1['High'],data1['Low'],data1['Close'],length=34)
@@ -158,5 +159,5 @@ def Loaddata():
             print("you are in exception", e)
             pass
          
-# Importdata()
+Importdata()
 Loaddata()
