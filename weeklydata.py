@@ -24,7 +24,7 @@ def Importdata():
         print(stock)
 
 def buy_sell_function(data):
-    print(" you are in buy sell function")
+    #print(" you are in buy sell function")
     buy_list = []
     sell_list = []
     flag_long = False
@@ -159,5 +159,5 @@ def Loaddata():
             print("you are in exception", e)
             pass
          
-Importdata()
+#Importdata()
 Loaddata()

@@ -19,7 +19,7 @@ from googleapiclient.discovery import build
 import google.auth
 from googleapiclient.errors import HttpError
 
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+SCOPES = ['https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/gmail.compose']
 def gmail_create_draft_with_attachment():
     #main1()
     """Create and insert a draft email with attachment.
@@ -53,7 +53,7 @@ def gmail_create_draft_with_attachment():
     try:
         # Call the Gmail API
         service = build('gmail', 'v1', credentials=creds)
-        results = service.users().labels().list(userId='muni.vadlamudi4@gmail.com').execute()
+        results = service.users().labels().list(userId='muni.vadlamudi@gmail.com').execute()
         labels = results.get('labels', [])
 
         if not labels:
@@ -70,7 +70,7 @@ def gmail_create_draft_with_attachment():
     try:
         # create gmail api client
         service = build('gmail', 'v1', credentials=creds)
-        results = service.users().labels().list(userId='muni.vadlamudi4@gmail.com').execute()
+        results = service.users().labels().list(userId='muni.vadlamudi@gmail.com').execute()
         labels = results.get('labels', [])
 
         if not labels:
@@ -82,9 +82,9 @@ def gmail_create_draft_with_attachment():
         mime_message = EmailMessage()
         #print(mime_message)
         # headers
-        mime_message['To'] = 'muni.vadlamudi@gmail.com'
-        mime_message['From'] = 'muni.vadlamudi4@gmail.com'
-        mime_message['Subject'] = 'sample with attachment'
+        mime_message['To'] = 'anila.lingutla@gmail.com'
+        mime_message['From'] = 'muni.vadlamudi@gmail.com'
+        mime_message['Subject'] = 'Test email from python'
         print(mime_message)
         # text
         mime_message.set_content(
@@ -104,26 +104,32 @@ def gmail_create_draft_with_attachment():
         mime_message.add_attachment(attachment_data, maintype, subtype)
         message_text=' This is test email'
         mime_message = MIMEText(message_text)
-        print("$%$%$%$%$%")
-        encoded_message = base64.urlsafe_b64encode(mime_message.as_bytes()).decode()
+        print("$%$%$%$%$%", mime_message)
+        #encoded_message = base64.urlsafe_b64encode(mime_message.as_bytes()).decode()
+        encoded_message = base64.urlsafe_b64encode(mime_message.as_bytes()) \
+            .decode()
         print("****************", encoded_message)
-        create_draft_request_body = {
-            'message': {
-                'raw': encoded_message
-            }
+        # create_draft_request_body = {
+        #     'message': {
+        #         'raw': encoded_message
+        #     }
+        # }
+        create_message = {
+            'raw': encoded_message
         }
-        print("after draft")
+        print("after draft", create_message)
         # pylint: disable=E1101
         #draft = service.users().drafts().create(userId="muni.vadlamudi4@gmail.com",body='this is test draft').execute()
-        draft = service.users().messages().send(userId="muni.vadlamudi4@gmail.com",body='this is test draft').execute()
+        send_message = service.users().messages().send(userId="muni.vadlamudi@gmail.com", body=create_message).execute()
+        #draft = service.users().messages().send(userId="muni.vadlamudi@gmail.com", body=create_draft_request_body).execute()
         print("TTTTTTTTTT")
-        print(F'Draft id: {draft["id"]}\nDraft message: {draft["message"]}')
+        print(F'Draft id: {send_message["id"]}\nDraft message: {send_message["message"]}')
         print("^^^^^^^^^^^")
     except HttpError as error:
         print(" $$$$$$$$$$$$ You are in exception $$$$$$$$$$$$$$$$$$$$")
         print(F'An error occurred: {error}')
         draft = None
-    return draft
+    return send_message
 
 
 def build_file_part(file):

@@ -77,7 +77,13 @@ def gmail_send_message():
         message['To'] = 'anila.lingutla@gmail.com'
         message['From'] = 'muni.vadlamudi@gmail.com'
         message['Subject'] = 'Test email from python'
-
+        attachment_filename = 'photo1.jpg'
+        type_subtype, _ = mimetypes.guess_type(attachment_filename)
+        print(type_subtype)
+        maintype, subtype = type_subtype.split('/')
+        with open(attachment_filename, 'rb') as fp:
+            attachment_data = fp.read()
+        message.add_attachment(attachment_data, maintype, subtype)
         # encoded message
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()) \
             .decode()
