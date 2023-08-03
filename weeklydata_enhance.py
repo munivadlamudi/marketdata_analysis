@@ -39,12 +39,17 @@ def buy_sell_function(data):
             flag_short = True
             fresh_sell.append("fresh sell")
             fresh_long.append(np.nan)
+            exit_long.append(np.nan)
+            exit_sell.append(np.nan)
         elif data['ema21'][i] > data['ema55'][i] and data['ema21'][i] < data['ema5'][i] and flag_short == False and flag_long == False:
             buy_list.append(data['Close'][i])
             sell_list.append(np.nan)
             flag_long = True
             fresh_long.append("fresh long")
             fresh_sell.append(np.nan)
+            fresh_long.append(np.nan)
+            exit_long.append(np.nan)
+            exit_sell.append(np.nan)
         elif flag_short == True and data['ema5'][i] > data['ema21'][i]:
             sell_list.append(np.nan)
             buy_list.append(data['Close'][i])
@@ -117,7 +122,7 @@ def Loaddata():
 
             # if data['Year'].equals(data1['Year']) and data['week_number'].equals(data1['week_number']):
             if data['Year'].equals(data1['Year']):
-                print("YEAR AND WEEKS ARE MATCHING")
+                print("YEAR AND WEEKS ARE MATCHING\n")
                 data['cci34_1w'] = data1['cci34_1W']
             print(" CHECK THE DATA OF THE : ", data)    
             result = data1.dtypes
@@ -130,18 +135,21 @@ def Loaddata():
             ouw.to_csv(out_file_name2,encoding='utf-8')
 
             buy_sell_function(data)
+            print("after method")
             data['Buy'] =  buy_sell_function(data)[0]
             data['Sell'] = buy_sell_function(data)[1]
+            print(" @@@@ after buy sell method")
             data['Fresh_long'] = buy_sell_function(data)[2]
             data['Exit_long'] = buy_sell_function(data)[3]
+            print(" @@@@ after long entry and exit  method")
             data['Fresh_sell'] = buy_sell_function(data)[4]
             data['Exit_sell'] = buy_sell_function(data)[5]
-            
+            print("end of the list")
 
             
         except Exception as e:
-            print("you are in exception", e)
+            print("you are in exception   @@@@", e)
             pass
          
-# Importdata()
+Importdata()
 Loaddata()
