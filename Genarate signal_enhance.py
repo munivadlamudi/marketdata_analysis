@@ -6,7 +6,10 @@ import pandas_ta as talib
 import subprocess
 
 def Loaddata():
-    
+    buy_data = []
+    sell_data = []
+    Buy_result_data='C:/Users/muniv/Desktop/Market/marketdata_analysis/Buy_Entry.csv'
+    Sell_result_data='C:/Users/muniv/Desktop/Market/marketdata_analysis/Sell_Entry.csv'
     for stock in stock_symbols:
         try:
             buy_entry = []
@@ -43,14 +46,42 @@ def Loaddata():
 
             ou = pd.DataFrame(data)
             ou.to_csv(out_file_name1,encoding='utf-8')
-            if not pd.isna(fresh_buy) and pd.isna(fresh_buy_1) :  
-                with open("Buy_file.csv", "a") as f:
-                    f.write(stock + " : " + str(fresh_buy) + str(data['Date_new'].iloc[-1]) + str(data['Close'].iloc[-1]) + "\n")
-            if not pd.isna(fresh_sell) and pd.isna(fresh_sell_1) :
+
+            
+
+            # ... (your previous code)
+
+            if not pd.isna(fresh_buy) and pd.isna(fresh_buy_1):
+                print("Write into Buy file") 
+                # Append data to buy_data list
+                buy_data.append({
+                    'stock': stock,
+                    'Comment': fresh_buy,
+                    'Date ': data['Date_new'].iloc[-1],
+                    'Closing Price': data['Close'].iloc[-1]
+                })
+
+            if not pd.isna(fresh_sell) and pd.isna(fresh_sell_1):
                 print("check signals for sell #####")
-                print("Write into Sell file")    
-                with open("Sell_file.csv", "a") as f:
-                    f.write(stock + " : " + str(fresh_sell) + str(data['Date_new'].iloc[-1]) + str(data['Close'].iloc[-1]) +  "\n")
+                print("Write into Sell file")
+                # Append data to sell_data list
+                sell_data.append({
+                    'stock': stock,
+                    'Comment': fresh_sell,
+                    'Date ': data['Date_new'].iloc[-1],
+                    'Closing Price': data['Close'].iloc[-1]
+                })
+
+            # Create DataFrames from the lists
+            Buy_result = pd.DataFrame(buy_data)
+            Sell_result = pd.DataFrame(sell_data)
+
+            # Save DataFrames to CSV files
+            if not Buy_result.empty:
+                Buy_result.to_csv(Buy_result_data, encoding='utf-8', index=False)
+
+            if not Sell_result.empty:
+                Sell_result.to_csv(Sell_result_data, encoding='utf-8', index=False)
            
         except  KeyError as e:
             print(f"you are in exception : {e}")
@@ -147,9 +178,9 @@ if __name__ == "__main__":
     # end_date = "2023-08-02"    # Replace with the desired end date
     end_date = date.today()
     print("script starting")
-    # subprocess.run(["python", "import yfinance as Dailydata.py"])
-    # subprocess.run(["python", "import yfinance as Weeklydata.py"])
-    # subprocess.run(["python", "data and analyze_adding more.py"])
-    # subprocess.run(["python", "file compare_fulllist.py"])
+    subprocess.run(["python", "import yfinance as Dailydata.py"])
+    subprocess.run(["python", "import yfinance as Weeklydata.py"])
+    subprocess.run(["python", "data and analyze_adding more.py"])
+    subprocess.run(["python", "file compare_fulllist.py"])
     #Importdata()   
     Loaddata()
