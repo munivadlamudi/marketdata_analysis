@@ -9,7 +9,7 @@ def get_yahoo_finance_historical_data(stock_symbols, start_date, end_date):
 def save_data_to_csv(stock_symbol, data, frequency='D'):
     if frequency == 'W':
         data = data.resample('W').last()  # Resample to weekly frequency, taking the last data point for each week
-    filename = 'C:/Users/mvadlamudi/Desktop/activity/Python/Nifty_All500_weekly/{}_Weekly.csv'.format(stock_symbol)
+    filename = 'C:/Users/muniv/Desktop/Market/Nifty_All500_weekly/{}_Weekly.csv'.format(stock_symbol)
     data.reset_index().to_csv(filename, index=False)
 
 if __name__ == "__main__":
