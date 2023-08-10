@@ -23,7 +23,7 @@ if __name__ == "__main__":
     print("Tomorrow's Date:", tomorrow_date)   
     print("Weekly data downloading script starting for the date : ", tomorrow_date) 
     start_date = "2022-01-01"  # Replace with the desired start date
-    # end_date = "2023-08-07"
+    # end_date = "2023-08-09"
     end_date = tomorrow_date  # Replace with the desired end date
 
     for stock_symbol in stock_symbols:
