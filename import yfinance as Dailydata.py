@@ -34,7 +34,7 @@ if __name__ == "__main__":
     tomorrow_date = current_date + timedelta(days=1)
     print("Current Date:", current_date)
     print("Tomorrow's Date:", tomorrow_date)
-    start_date = "2022-01-01"  # Replace with the desired start date
+    start_date = "2015-01-01"  # Replace with the desired start date
     # end_date = "2023-08-10"
     end_date = tomorrow_date
     print("Daily data download script starting for the date : ",tomorrow_date)

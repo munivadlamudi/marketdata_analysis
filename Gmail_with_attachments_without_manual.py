@@ -35,10 +35,10 @@ service = build("gmail", "v1", credentials=creds)
 
 sender = 'muni.vadlamudi47@gmail.com'
 to = ['muni.vadlamudi47@gmail.com'] #,'vnswamy6@gmail.com','vikramkambhoji@gmail.com','sitaramchowdaryunnam@gmail.com','sreedhar.siddam@gmail.com']
-bcc = ['vnswamy6@gmail.com','vikramkambhoji@gmail.com','sitaramchowdaryunnam@gmail.com','sreedhar.siddam@gmail.com']
+bcc = ['vnswamy6@gmail.com']#,'vikramkambhoji@gmail.com','sitaramchowdaryunnam@gmail.com','sreedhar.siddam@gmail.com']
 subject = f"Daily Buy Report - {datetime.now().strftime('%Y-%m-%d')}"
 message_text = "Please check the attached report for daily analysis. \n This is purely for educational and personal viewing, and not a recommendation for purchasing."
-file_path = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Buy_Entry.csv'  # Replace with your attachment file path
+file_path = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Buy_Entry.csv' #,'C:/Users/muniv/Desktop/Market/marketdata_analysis/Sell_Entry.csv']  # Replace with your attachment file path
 def create_message_with_attachment(sender, to, bcc, subject, message_text, file_path):
     message = MIMEMultipart()
     message["to"] = to

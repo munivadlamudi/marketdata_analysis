@@ -88,7 +88,7 @@ def ReportGen(stock_symbols):
         except FileNotFoundError as e:
             print(f"File not found: {e}")
 
-    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports.csv'
+    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen.csv'
     report_df = pd.DataFrame(report_data)
     report_df.to_csv(report_gen, encoding='utf-8', index=False)
 

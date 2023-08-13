@@ -22,7 +22,7 @@ if __name__ == "__main__":
     print("Current Date:", current_date)
     print("Tomorrow's Date:", tomorrow_date)   
     print("Weekly data downloading script starting for the date : ", tomorrow_date) 
-    start_date = "2022-01-01"  # Replace with the desired start date
+    start_date = "2015-01-01"  # Replace with the desired start date
     # end_date = "2023-08-10"
     end_date = tomorrow_date  # Replace with the desired end date
 
