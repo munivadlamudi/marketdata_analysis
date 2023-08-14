@@ -53,7 +53,7 @@ def ReportGen(stock_symbols):
                                 # print("loss % :",loss_pern)
                                 lh = "5% SL hit" if (100 - (entry_close / sell_close ) * 100) <= -5 else "null"
 
-                                if loss_pern < -5:
+                                if loss_pern > -10:
                                     new_record = {
                                         'Stock Name': stock,
                                         'Entry price': entry_close,
@@ -71,7 +71,7 @@ def ReportGen(stock_symbols):
                                 profit_pern=(100 - (entry_close / sell_close) * 100)
                                 # print('Profit % :',profit_pern)
                                 ph = "10% target hit" if (100 - (entry_close / sell_close) * 100) >= 15 else "null"
-                                if profit_pern > 15:
+                                if profit_pern > 20:
                                     new_record = {
                                         'Stock Name': stock,
                                         'Entry price': entry_close,
