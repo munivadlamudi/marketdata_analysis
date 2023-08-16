@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import pandas_ta as talib
 import subprocess
+import time
 
 # Your other functions and imports...
 
@@ -36,15 +37,15 @@ def process_stock(stock):
         fresh_sell = data.iloc[-1]['sell_Entry']
         fresh_buy_1 = data.iloc[-2]['Buy_Entry']
         fresh_sell_1 = data.iloc[-2]['sell_Entry']
-        print("fresh_buy : ",fresh_buy)
-        print("fresh_sell : ",fresh_sell)
+        # print("fresh_buy : ",fresh_buy)
+        # print("fresh_sell : ",fresh_sell)
 
         ou = pd.DataFrame(data)
         ou.to_csv(out_file_name1,encoding='utf-8')
 
         # if not pd.isna(fresh_buy) and pd.isna(fresh_buy_1):
         if not pd.isna(fresh_buy):
-            print("Write into Buy file") 
+            # print("Write into Buy file") 
             # Append data to buy_data list
             buy_data.append({
                 'stock': stock,
@@ -55,8 +56,8 @@ def process_stock(stock):
 
         # if not pd.isna(fresh_sell) and pd.isna(fresh_sell_1):
         if not pd.isna(fresh_sell):
-            print("check signals for sell #####")
-            print("Write into Sell file")
+            # print("check signals for sell #####")
+            # print("Write into Sell file")
             # Append data to sell_data list
             sell_data.append({
                 'stock': stock,
@@ -144,7 +145,7 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             buy_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-        elif flag_short == True and ((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ):
+        elif flag_short == True and (((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ) and data['cci34_1W'][i] > -100):
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_short = False
@@ -152,7 +153,7 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             exit_buy.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
-        elif flag_long == True and ((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ):
+        elif flag_long == True and (((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ) and data['cci34_1W'][i] < 100):
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_long = False
@@ -176,7 +177,7 @@ def main():
     
     
     # Use ThreadPoolExecutor to parallelize processing for multiple stocks
-    max_threads = 100 # You can adjust the number of threads as needed
+    max_threads = 50 # You can adjust the number of threads as needed
     with ThreadPoolExecutor(max_threads) as executor:
         executor.map(process_stock, stock_symbols)
 
@@ -192,6 +193,7 @@ if __name__ == "__main__":
     sell_data = []
     Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry.csv'
     Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
+    start_time = time.time()
     # Load existing Buy result data if it exists
     try:
         existing_buy_data = pd.read_csv(Buy_result_data)
@@ -213,3 +215,8 @@ if __name__ == "__main__":
     main()
     # subprocess.run(["python", "Report_generation.py"])
     # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])
+    end_time = time.time()
+    total_time = end_time - start_time
+
+    print(f"Total runtime: {total_time:.2f} seconds")
+    print("Report generation complete.")
