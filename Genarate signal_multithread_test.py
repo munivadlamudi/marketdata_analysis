@@ -124,6 +124,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
         EMAALrangeB1 = 1 if EMAALrangeB1 else 0
         EMAALrangeB2 = ((EMAALB >= 0.381 and EMAALB <= 2.5) and (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100))
         EMAALrangeB2 = 1 if EMAALrangeB2 else 0
+        print('date : ', data.iloc[i]['Date_new'])
+        print('EMAALrangeB2 :',EMAALrangeB2)
         EMAALrangeS = (((EMAALS >= 0.381 and EMAALS <= 2.22) and (data['cci34_1W'][i] <= 100 and data['cci34_1D'][i] <= -100)) or (data['cci34_1W'][i] <= -100 and data['cci34_1D'][i] <= -100))
         EMAALrangeS = 1 if EMAALrangeS else 0
         EMAALrangeS1 = ((data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= -100) or (data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= 0))
@@ -171,12 +173,14 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
+        # print('buy_entry :', buy_entry)
+        
     return (data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell)
 def main():
     # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
-    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
-    stock_symbols = import_stock_symbols_from_csv(csv_file_path)
-    # stock_symbols = ['CHEMPLASTS.NS']
+    # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
+    # stock_symbols = import_stock_symbols_from_csv(csv_file_path)
+    stock_symbols = ['CHEMPLASTS.NS']
     print("Script starting")
     
     
@@ -214,12 +218,12 @@ if __name__ == "__main__":
     except FileNotFoundError:
         existing_sell_data = None
 
-    subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
-    subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
-    subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance.py"])
-    subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
+    # subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
+    # subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
+    # subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance.py"])
+    # subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
     main()
-    subprocess.run(["python", "Report_generation_multi_enhance.py"])
+    # subprocess.run(["python", "Report_generation_multi_enhance.py"])
     # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])
     end_time = time.time()
     total_time = end_time - start_time

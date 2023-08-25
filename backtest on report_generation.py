@@ -1,6 +1,8 @@
 import pandas as pd
 import concurrent.futures
 import time
+import backtrader as bt
+
 
 # ... (your existing imports and functions)
 
@@ -99,14 +101,14 @@ def import_stock_symbols_from_csv(filename):
 if __name__ == "__main__":
     # ... (your existing code)
     # report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d16-08-2023.csv'
-    report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
+    report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d16-08-2023.csv'
     start_time = time.time()
     # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
     csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     report_data = []
 
-    max_threads = 25  # Adjust the number of threads as needed
+    max_threads = 50  # Adjust the number of threads as needed
     with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
         # Create a dictionary to map stock symbols to their respective dataframes
         stock_data = {}
