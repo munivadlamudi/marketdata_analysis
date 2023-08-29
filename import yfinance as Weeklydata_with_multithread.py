@@ -12,8 +12,8 @@ def get_yahoo_finance_historical_data(stock_symbols, start_date, end_date, inter
 
 def save_data_to_csv(stock_symbol, data):
     
-    #filename = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock_symbol) #jaikeethlap
-    filename = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock_symbol) #mainlap
+    filename = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock_symbol) #jaikeethlap
+    # filename = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock_symbol) #mainlap
     data.reset_index().to_csv(filename, index=False)
 
 def import_stock_symbols_from_csv(filename):
@@ -45,8 +45,8 @@ def Importdata(stock_symbols, start_date, end_date):
 
 if __name__ == "__main__":
     # Rest of your code...
-   # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv' #jaikeerthlap
-    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
+    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv' #jaikeerthlap
+    # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     current_date = datetime.today().date()
     tomorrow_date = current_date + timedelta(days=1)

@@ -97,12 +97,12 @@ def import_stock_symbols_from_csv(filename):
     return stock_symbols
 
 if __name__ == "__main__":
-    # ... (your existing code)
-    # report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d16-08-2023.csv'
-    report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
+    
+    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d29-08-2023.csv'
+    # report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
     start_time = time.time()
-    # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
-    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
+    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     report_data = []
 
@@ -112,7 +112,8 @@ if __name__ == "__main__":
         stock_data = {}
         for stock in stock_symbols:
             try:
-                data = pd.read_csv(f'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{stock}.csv')
+                # data = pd.read_csv(f'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{stock}.csv')
+                data = pd.read_csv(f'C:/Users/muniv/Desktop/Market/Signals_multi/{stock}.csv')
                 stock_data[stock] = data
             except FileNotFoundError as e:
                 print(f"File not found: {e}")

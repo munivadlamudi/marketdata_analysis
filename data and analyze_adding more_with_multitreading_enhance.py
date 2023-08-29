@@ -108,22 +108,22 @@ def process_stocks(stock_symbols):
     return processed_data
 def process_stock(stock):
     try:
-        # data = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock))
-        # data1 = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock))
-        data = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock))
-        data1 = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock))
+        data = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock))
+        data1 = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock))
+        # data = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock))
+        # data1 = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock))
         # ... (rest of your data processing code)
-        # out_file_name1 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock)
-        # out_file_name2 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock)
+        out_file_name1 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock)
+        out_file_name2 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock)
 
-        out_file_name1 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock)
-        out_file_name2 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock)
+        # out_file_name1 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock)
+        # out_file_name2 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock)
         print(stock) 
         print("###################################################################################################")
-        close = data.iloc[-1]['Close']
-        open_price = data.iloc[-1]['Open']
-        high = data.iloc[-1]['High']
-        low = data.iloc[-1]['Low']
+        # close = data.iloc[-1]['Close']
+        # open_price = data.iloc[-1]['Open']
+        # high = data.iloc[-1]['High']
+        # low = data.iloc[-1]['Low']
 #### identificatio of streangth candle
         # SC_Candle = False
         # CH = high - low
@@ -147,6 +147,10 @@ def process_stock(stock):
         data['week_number'] = data["Date_new"].dt.isocalendar().week
         # weekly_data = data.resample('W').last()
 
+        data1['ema5']  = talib.ema(data1['Close'], length=5)
+        data1['ema21']  = talib.ema(data1['Close'], length=21)
+        data1['ema55']  = talib.ema(data1['Close'], length=55)
+        # data1['cci8'] =  talib.cci(data1['High'],data1['Low'],data1['Close'],length=8)
         data1['cci34_1W'] =  talib.cci(data1['High'],data1['Low'],data1['Close'],length=34)
         data1['Date_new'] = pd.to_datetime(data1['Date'])
         data1['Year'] = data1['Date_new'].dt.year
@@ -164,8 +168,8 @@ def process_stock(stock):
         return None
 if __name__ == "__main__":
     
-    # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
-    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
+    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     start_date = "2023-01-01"  # Replace with the desired start date
   
