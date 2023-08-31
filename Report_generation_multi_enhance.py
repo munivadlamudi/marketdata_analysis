@@ -13,7 +13,29 @@ def analyze_stock(stock, data):
             if row['Buy_Entry'] == 'freshe buy':
                         entry_close = row['Close']
                         entry_date = row['Date_new']
+                        ema5 = row['ema5']
+                        ema21 = row['ema21']
+                        ema55 = row['ema55']
+                        cci341d = row['cci34_1D']
+                        cci341w = row['cci34_1W']
                         exit_found = False
+                        goldentry = ''
+                        Highprob = ''
+                        checkprob = ''
+                        if ((ema5 > ema21) and (ema21 > ema55)) and (cci341d > 100 and cci341w > 100):
+                             goldentry = "Golden entry"
+                        elif ((ema5 > ema21) and (ema21 > ema55)) and (cci341d > 70 and cci341w > 100):
+                             Highprob = "High probability"
+                        else:
+                             checkprob = "check the chart" 
+                        entrytype=''
+                        if goldentry != '':
+                             entrytype = goldentry
+                        elif Highprob != '':
+                             entrytype = Highprob
+                        else:
+                             entrytype = checkprob     
+
                         for idx, sell_row in data.iterrows():
                             sell_close = sell_row['Close']
                             sell_date = sell_row['Date']
@@ -29,7 +51,10 @@ def analyze_stock(stock, data):
                                         'Exit Price': sell_close,
                                         'Exit Date': sell_date,
                                         'Loss': entry_close - sell_close,
-                                        'LH 5%': (100 - (entry_close / sell_close ) * 100)
+                                        'LH 5%': (100 - (entry_close / sell_close ) * 100),
+                                        'Comment':"indicator Exit",
+                                        'Entry Type': entrytype
+                                
                                     }
                                 else:
                                     # profit = sell_close - entry_close
@@ -41,7 +66,9 @@ def analyze_stock(stock, data):
                                         'Exit Price': sell_close,
                                         'Exit Date': sell_date,
                                         'Profit': sell_close - entry_close,
-                                        'PH 10%': (100 - (entry_close / sell_close) * 100)
+                                        'PH 10%': (100 - (entry_close / sell_close) * 100),
+                                        'Comment':"indicator Exit",
+                                        'Entry Type': entrytype
                                     }
                                 report_data.append(new_record)
                                 exit_found = True
@@ -61,7 +88,9 @@ def analyze_stock(stock, data):
                                             'Exit Price': sell_close,
                                             'Exit Date': sell_date,
                                             'Loss': loss,
-                                            'LH 5%': loss_pern
+                                            'LH 5%': loss_pern,
+                                            'Comment':"SL HIT",
+                                            'Entry Type': entrytype
                                         }
                                         report_data.append(new_record)
                                         exit_found = True
@@ -79,7 +108,9 @@ def analyze_stock(stock, data):
                                             'Exit Price': sell_close,
                                             'Exit Date': sell_date,
                                             'Profit': profit,
-                                            'PH 10%': profit_pern
+                                            'PH 10%': profit_pern,
+                                            'Comment':"Profit HIT",
+                                            'Entry Type': entrytype
                                         }
                                         report_data.append(new_record)
                                         exit_found = True
@@ -98,7 +129,7 @@ def import_stock_symbols_from_csv(filename):
 
 if __name__ == "__main__":
     
-    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d29-08-2023.csv'
+    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d30-08-2023.csv'
     # report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
     start_time = time.time()
     csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'

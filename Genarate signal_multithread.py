@@ -6,6 +6,7 @@ import numpy as np
 import pandas_ta as talib
 import subprocess
 import time
+import multiprocessing
 
 # Your other functions and imports...
 
@@ -14,6 +15,7 @@ def process_stock(stock):
         # Your existing processing code for each stock here...
         # ...
         buy_entry = []
+        entry_type = []
         exit_buy = []
         sell_entry = []
         exit_sell = []
@@ -23,7 +25,7 @@ def process_stock(stock):
         out_file_name1 = 'C:/Users/muniv/Desktop/Market/Signals_multi/{}.csv'.format(stock)        
         # data = pd.read_csv('/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Compare_multi/{}.csv'.format(stock)) 
         # out_file_name1 = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{}.csv'.format(stock)      
-        buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell)
+        buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
         #report_performance(data)
         print("Name of the stock : ",stock)
         #print(buy_sell_function(data)[0])
@@ -34,6 +36,7 @@ def process_stock(stock):
         data['exit_buy'] = exit_buy
         data['sell_Entry'] = sell_entry
         data['exit_sell'] = exit_sell
+        data['entry_type'] = entry_type
         
         fresh_buy = data.iloc[-1]['Buy_Entry']
         fresh_sell = data.iloc[-1]['sell_Entry']
@@ -53,7 +56,8 @@ def process_stock(stock):
                 'stock': stock,
                 'Comment': fresh_buy,
                 'Date ': data['Date_new'].iloc[-1],
-                'Closing Price': data['Close'].iloc[-1]
+                'Closing Price': data['Close'].iloc[-1],
+                'entry_type':data['entry_type'].iloc[-1]
             })
 
         # if not pd.isna(fresh_sell) and pd.isna(fresh_sell_1):
@@ -82,7 +86,7 @@ def process_stock(stock):
 
     except KeyError as e:
         print(f"You are in exception: {e}")
-def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell):
+def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type):
     
     
     fresh_long = False
@@ -136,6 +140,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             sell_list.append(np.nan)
             flag_long = True
             fresh_long = True
+            if EMAALrangeB2:
+                entry_type.append("Golden entry")
             buy_entry.append("freshe buy")
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
@@ -146,6 +152,7 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             flag_short = True
             fresh_short = True
             sell_entry.append("Fresh sell")
+            entry_type.append(np.nan)
             buy_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
@@ -154,6 +161,7 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             buy_list.append(np.nan)
             flag_short = False
             exit_sell.append("Exit sell")
+            entry_type.append(np.nan)
             exit_buy.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
@@ -162,17 +170,19 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             buy_list.append(np.nan)
             flag_long = False
             exit_buy.append("Exit buy")
+            entry_type.append(np.nan)
             exit_sell.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
         else:
             buy_list.append(np.nan)
             sell_list.append(np.nan)
+            entry_type.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-    return (data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell)
+    return (data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
 def main():
     csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
     # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
@@ -192,7 +202,11 @@ def import_stock_symbols_from_csv(filename):
     symbol_df = pd.read_csv(filename)
     stock_symbols = symbol_df['stock_symbol'].tolist()
     return stock_symbols
+def run_program1():
+    subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
 
+def run_program2():
+    subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
 if __name__ == "__main__":
     buy_data = []
     sell_data = []
@@ -214,13 +228,21 @@ if __name__ == "__main__":
         sell_data.extend(existing_sell_data.to_dict('records'))
     except FileNotFoundError:
         existing_sell_data = None
-
+    process1 = multiprocessing.Process(target=run_program1)
+    process2 = multiprocessing.Process(target=run_program2)
     # subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
     # subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
-    # subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance_updated.py"])
-    # subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
+    process1.start()
+    process2.start()
+    
+    process1.join()
+    process2.join()
+
+    print("Both programs have finished running.")
+    subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance_updated.py"])
+    subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
     main()
-    # subprocess.run(["python", "Report_generation_multi_enhance.py"])
+    subprocess.run(["python", "Report_generation_multi_enhance.py"])
     # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])
     end_time = time.time()
     total_time = end_time - start_time
