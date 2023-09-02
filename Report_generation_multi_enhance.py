@@ -35,8 +35,8 @@ def analyze_stock(stock, data):
                              entrytype = Highprob
                         else:
                              entrytype = checkprob     
-
-                        for idx, sell_row in data.iterrows():
+                        # sell_row = row
+                        for idx, sell_row in data.iloc[index:].iterrows():
                             sell_close = sell_row['Close']
                             sell_date = sell_row['Date']
                             
@@ -129,7 +129,7 @@ def import_stock_symbols_from_csv(filename):
 
 if __name__ == "__main__":
     
-    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d30-08-2023.csv'
+    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d30-08-2023__update.csv'
     # report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
     start_time = time.time()
     csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
@@ -144,7 +144,8 @@ if __name__ == "__main__":
         for stock in stock_symbols:
             try:
                 # data = pd.read_csv(f'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{stock}.csv')
-                data = pd.read_csv(f'C:/Users/muniv/Desktop/Market/Signals_multi/{stock}.csv')
+                # data = pd.read_csv(f'C:/Users/muniv/Desktop/Market/Signals_multi/{stock}.csv')
+                data = pd.read_csv(f'C:/Users/muniv/Desktop/Market/Signals_multi_updated/{stock}.csv')
                 stock_data[stock] = data
             except FileNotFoundError as e:
                 print(f"File not found: {e}")

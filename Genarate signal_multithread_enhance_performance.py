@@ -22,7 +22,7 @@ def process_stock(stock):
         buy_list = []
         sell_list = []
         data = pd.read_csv('C:/Users/muniv/Desktop/Market/Compare_multi/{}.csv'.format(stock)) 
-        out_file_name1 = 'C:/Users/muniv/Desktop/Market/Signals_multi_updated/{}.csv'.format(stock)        
+        out_file_name1 = 'C:/Users/muniv/Desktop/Market/Signals_multi/{}.csv'.format(stock)        
         # data = pd.read_csv('/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Compare_multi/{}.csv'.format(stock)) 
         # out_file_name1 = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{}.csv'.format(stock)      
         buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
@@ -93,7 +93,16 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
     fresh_short = False
     flag_long = False
     flag_short = False
-    for i in range(0,len(data)):
+    # Find the index of the last "Exit buy" in the exit_buy column
+    last_exit_buy_index = data[data['exit_buy'] == "Exit buy"].index[-1] if "Exit buy" in data['exit_buy'].values else -1
+
+    # Find the index of the last "Fresh Buy" in the Buy_Entry column
+    last_fresh_buy_index = data[data['Buy_Entry'] == "Fresh Buy"].index[-1] if "Fresh Buy" in data['Buy_Entry'].values else -1
+
+    # Determine the last index to start processing from
+    last_index = max(last_exit_buy_index, last_fresh_buy_index)
+
+    for i in range(last_index + 1, len(data)):
 
         close = data.iloc[i]['Close']
         open_price = data.iloc[i]['Open']
@@ -134,17 +143,16 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
         EMAALrangeS1 = 1 if EMAALrangeS1 else 0
 
         # if SC_Candle_B and (EMAALrangeB or EMAALrangeB1) and flag_short == False and flag_long == False :
-        # if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False :
-        if (SC_Candle_B and EMAALrangeB2) and flag_long == False :
+        if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False :
        # if EMAALrangeB2 and flag_long == False :    
             buy_list.append(data['Close'][i])
             sell_list.append(np.nan)
             flag_long = True
             fresh_long = True
-            # if EMAALrangeB2:
-            entry_type.append("Golden entry")
-            # else:
-            #     entry_type.append(np.nan)
+            if EMAALrangeB2:
+                entry_type.append("Golden entry")
+            else:
+                entry_type.append(np.nan)
             buy_entry.append("freshe buy")
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
@@ -213,8 +221,8 @@ def run_program2():
 if __name__ == "__main__":
     buy_data = []
     sell_data = []
-    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry_update.csv'
-    Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry_update.csv'
+    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry.csv'
+    Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
     # Buy_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Buy_Entry.csv'
     # Sell_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Sell_Entry.csv'
     start_time = time.time()
@@ -231,19 +239,19 @@ if __name__ == "__main__":
         sell_data.extend(existing_sell_data.to_dict('records'))
     except FileNotFoundError:
         existing_sell_data = None
-    # process1 = multiprocessing.Process(target=run_program1)
-    # process2 = multiprocessing.Process(target=run_program2)
-    # # subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
-    # # subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
-    # process1.start()
-    # process2.start()
+    process1 = multiprocessing.Process(target=run_program1)
+    process2 = multiprocessing.Process(target=run_program2)
+    # subprocess.run(["python", "import yfinance as Dailydata_with_multithread.py"])
+    # subprocess.run(["python", "import yfinance as Weeklydata_with_multithread.py"])
+    process1.start()
+    process2.start()
     
-    # process1.join()
-    # process2.join()
+    process1.join()
+    process2.join()
 
-    # print("Both programs have finished running.")
-    # subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance_updated.py"])
-    # subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
+    print("Both programs have finished running.")
+    subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance_updated.py"])
+    subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
     main()
     subprocess.run(["python", "Report_generation_multi_enhance.py"])
     # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])

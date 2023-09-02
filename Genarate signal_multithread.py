@@ -142,6 +142,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             fresh_long = True
             if EMAALrangeB2:
                 entry_type.append("Golden entry")
+            else:
+                entry_type.append(np.nan)
             buy_entry.append("freshe buy")
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
