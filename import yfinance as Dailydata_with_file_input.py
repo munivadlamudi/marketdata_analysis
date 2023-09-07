@@ -11,7 +11,7 @@ def get_yahoo_finance_historical_data(stock_symbols, start_date, end_date):
 
 def save_data_to_csv(stock_symbol, data):
     
-    filename = 'C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock_symbol)
+    filename = 'C:/Users/muniv/Desktop/Market/Nifty_All500/{}.csv'.format(stock_symbol)
     data.reset_index().to_csv(filename, index=False)
 
 
@@ -30,7 +30,7 @@ def Importdata(stock_symbols, start_date, end_date):
             print(f"Failed to fetch data for {stock_symbol}: {e}")
 
 if __name__ == "__main__":
-    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols_Test.csv'
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     current_date = datetime.today().date()
     tomorrow_date = current_date + timedelta(days=1)

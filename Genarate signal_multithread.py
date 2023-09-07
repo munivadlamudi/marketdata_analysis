@@ -8,12 +8,11 @@ import subprocess
 import time
 import multiprocessing
 
-# Your other functions and imports...
+
 
 def process_stock(stock):
     try:
-        # Your existing processing code for each stock here...
-        # ...
+        
         buy_entry = []
         entry_type = []
         exit_buy = []
@@ -86,6 +85,8 @@ def process_stock(stock):
 
     except KeyError as e:
         print(f"You are in exception: {e}")
+
+
 def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type):
     
     
@@ -100,8 +101,12 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
         high = data.iloc[i]['High']
         low = data.iloc[i]['Low']
         #### identificatio of streangth candle
+        
         SC_Candle_B = False
         SC_Candle_S = False
+
+        # SC_Candle_B = (close > open_price) & ((close - open_price) / (high - low) > 0.5)
+        # SC_Candle_S = (close < open_price) & ((open_price - close) / (high - low) > 0.5)
         CH = high - low
         if close > open_price:
             BH = close - open_price
@@ -136,19 +141,23 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
         # if SC_Candle_B and (EMAALrangeB or EMAALrangeB1) and flag_short == False and flag_long == False :
         if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False :
        # if EMAALrangeB2 and flag_long == False :    
+       # Open a buy position
             buy_list.append(data['Close'][i])
             sell_list.append(np.nan)
             flag_long = True
             fresh_long = True
             if EMAALrangeB2:
                 entry_type.append("Golden entry")
+            elif EMAALrangeB1:
+                entry_type.append("Reversal entry")
             else:
                 entry_type.append(np.nan)
-            buy_entry.append("freshe buy")
+            buy_entry.append("fresh buy")
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
         elif SC_Candle_S and (EMAALrangeS or EMAALrangeS1) and flag_long == False and flag_short == False :
+             # Open a sell position
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_short = True
@@ -158,7 +167,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             buy_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-        elif flag_short == True and (((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ) and data['cci34_1W'][i] > -100):
+        elif flag_short == True and ((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ): # and data['cci34_1W'][i] > -100):
+            # Close the sell position
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_short = False
@@ -167,7 +177,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             exit_buy.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
-        elif flag_long == True and (((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ) and data['cci34_1W'][i] < 100):
+        elif flag_long == True and ((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ): # and data['cci34_1W'][i] < 100):
+            # Close the buy position
             sell_list.append(data['Close'][i])
             buy_list.append(np.nan)
             flag_long = False
@@ -212,7 +223,7 @@ def run_program2():
 if __name__ == "__main__":
     buy_data = []
     sell_data = []
-    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry.csv'
+    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry_check.csv'
     Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
     # Buy_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Buy_Entry.csv'
     # Sell_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Sell_Entry.csv'
@@ -244,10 +255,11 @@ if __name__ == "__main__":
     subprocess.run(["python", "data and analyze_adding more_with_multitreading_enhance_updated.py"])
     subprocess.run(["python", "file compare_fulllist_multithreading_enhance.py"])
     main()
-    subprocess.run(["python", "Report_generation_multi_enhance.py"])
+    # subprocess.run(["python", "Report_generation_multi_enhance.py"])
+    subprocess.run(["python", "Report_generation_multi_enhance_without_inner_for loop.py"])
     # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])
     end_time = time.time()
     total_time = end_time - start_time
 
-    print(f"Total runtime: {total_time:.2f} seconds")
+    print(f"Total runtime: {total_time / 60:.2f} minutes")
     print("Report generation complete.")

@@ -8,12 +8,11 @@ import subprocess
 import time
 import multiprocessing
 
-# Your other functions and imports...
+
 
 def process_stock(stock):
     try:
-        # Your existing processing code for each stock here...
-        # ...
+        
         buy_entry = []
         entry_type = []
         exit_buy = []
@@ -86,79 +85,180 @@ def process_stock(stock):
 
     except KeyError as e:
         print(f"You are in exception: {e}")
-def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type):
+
+# # 
+# def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type):
     
     
+#     fresh_long = False
+#     fresh_short = False
+#     flag_long = False
+#     flag_short = False
+#     for i in range(0,len(data)):
+
+#         close = data.iloc[i]['Close']
+#         open_price = data.iloc[i]['Open']
+#         high = data.iloc[i]['High']
+#         low = data.iloc[i]['Low']
+#         #### identificatio of streangth candle
+        
+#         SC_Candle_B = False
+#         SC_Candle_S = False
+
+#         # SC_Candle_B = (close > open_price) & ((close - open_price) / (high - low) > 0.5)
+#         # SC_Candle_S = (close < open_price) & ((open_price - close) / (high - low) > 0.5)
+#         CH = high - low
+#         if close > open_price:
+#             BH = close - open_price
+#             if BH > 0: 
+#                 SC = (BH/CH) * 100
+#                 SC_Candle_B = False
+#                 if SC > 50:
+#                     SC_Candle_B = True
+    
+#         else:
+#             BH = open_price - close
+#             if BH > 0: 
+#                 SC = (BH/CH) * 100
+#                 SC_Candle_S = False
+#                 if SC > 50:
+#                     SC_Candle_S = True
+        
+#         EMAALB = (data['ema5'][i] - data['ema21'][i])/(data['ema21'][i] - data['ema55'][i])
+#         EMAALS = (data['ema55'][i] - data['ema21'][i])/(data['ema21'][i] - data['ema5'][i]) 
+        
+#         EMAALrangeB = (((EMAALB >= 0.381 and EMAALB <= 2.22) and (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100)) or (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100))
+#         EMAALrangeB = 1 if EMAALrangeB else 0
+#         EMAALrangeB1 = ((data['cci34_1W'][i] > -70 and data['cci34_1D'][i] >= 100) or (data['cci34_1W'][i] > 70 and data['cci34_1D'][i] >= 0))
+#         EMAALrangeB1 = 1 if EMAALrangeB1 else 0
+#         EMAALrangeB2 = ((EMAALB >= 0.381 and EMAALB <= 2.5) and (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100))
+#         EMAALrangeB2 = 1 if EMAALrangeB2 else 0
+#         EMAALrangeS = (((EMAALS >= 0.381 and EMAALS <= 2.22) and (data['cci34_1W'][i] <= 100 and data['cci34_1D'][i] <= -100)) or (data['cci34_1W'][i] <= -100 and data['cci34_1D'][i] <= -100))
+#         EMAALrangeS = 1 if EMAALrangeS else 0
+#         EMAALrangeS1 = ((data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= -100) or (data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= 0))
+#         EMAALrangeS1 = 1 if EMAALrangeS1 else 0
+
+#         # if SC_Candle_B and (EMAALrangeB or EMAALrangeB1) and flag_short == False and flag_long == False :
+#         if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False :
+#        # if EMAALrangeB2 and flag_long == False :    
+#        # Open a buy position
+#             buy_list.append(data['Close'][i])
+#             sell_list.append(np.nan)
+#             flag_long = True
+#             fresh_long = True
+#             if EMAALrangeB2:
+#                 entry_type.append("Golden entry")
+#             elif EMAALrangeB1:
+#                 entry_type.append("Reversal entry")
+#             else:
+#                 entry_type.append(np.nan)
+#             buy_entry.append("fresh buy")
+#             sell_entry.append(np.nan)
+#             exit_buy.append(np.nan)
+#             exit_sell.append(np.nan)
+#         elif SC_Candle_S and (EMAALrangeS or EMAALrangeS1) and flag_long == False and flag_short == False :
+#              # Open a sell position
+#             sell_list.append(data['Close'][i])
+#             buy_list.append(np.nan)
+#             flag_short = True
+#             fresh_short = True
+#             sell_entry.append("Fresh sell")
+#             entry_type.append(np.nan)
+#             buy_entry.append(np.nan)
+#             exit_buy.append(np.nan)
+#             exit_sell.append(np.nan)
+#         elif flag_short == True and ((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ): # and data['cci34_1W'][i] > -100):
+#             # Close the sell position
+#             sell_list.append(data['Close'][i])
+#             buy_list.append(np.nan)
+#             flag_short = False
+#             exit_sell.append("Exit sell")
+#             entry_type.append(np.nan)
+#             exit_buy.append(np.nan)
+#             buy_entry.append(np.nan)
+#             sell_entry.append(np.nan)
+#         elif flag_long == True and ((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ): # and data['cci34_1W'][i] < 100):
+#             # Close the buy position
+#             sell_list.append(data['Close'][i])
+#             buy_list.append(np.nan)
+#             flag_long = False
+#             exit_buy.append("Exit buy")
+#             entry_type.append(np.nan)
+#             exit_sell.append(np.nan)
+#             buy_entry.append(np.nan)
+#             sell_entry.append(np.nan)
+#         else:
+#             buy_list.append(np.nan)
+#             sell_list.append(np.nan)
+#             entry_type.append(np.nan)
+#             buy_entry.append(np.nan)
+#             sell_entry.append(np.nan)
+#             exit_buy.append(np.nan)
+#             exit_sell.append(np.nan)
+#     return (data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
+
+def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell, entry_type):
     fresh_long = False
     fresh_short = False
     flag_long = False
     flag_short = False
-    # Find the index of the last "Exit buy" in the exit_buy column
-    last_exit_buy_index = data[data['exit_buy'] == "Exit buy"].index[-1] if "Exit buy" in data['exit_buy'].values else -1
 
-    # Find the index of the last "Fresh Buy" in the Buy_Entry column
-    last_fresh_buy_index = data[data['Buy_Entry'] == "freshe buy"].index[-1] if "freshe buy" in data['Buy_Entry'].values else -1
+    for index, row in data.iterrows():
+        close = row['Close']
+        open_price = row['Open']
+        high = row['High']
+        low = row['Low']
 
-    # Determine the last index to start processing from
-    last_index = max(last_exit_buy_index, last_fresh_buy_index)
-
-    for i in range(last_index + 1, len(data)):
-
-        close = data.iloc[i]['Close']
-        open_price = data.iloc[i]['Open']
-        high = data.iloc[i]['High']
-        low = data.iloc[i]['Low']
-        #### identificatio of streangth candle
         SC_Candle_B = False
         SC_Candle_S = False
+
         CH = high - low
         if close > open_price:
             BH = close - open_price
-            if BH > 0: 
-                SC = (BH/CH) * 100
+            if BH > 0:
+                SC = (BH / CH) * 100
                 SC_Candle_B = False
                 if SC > 50:
                     SC_Candle_B = True
-    
         else:
             BH = open_price - close
-            if BH > 0: 
-                SC = (BH/CH) * 100
+            if BH > 0:
+                SC = (BH / CH) * 100
                 SC_Candle_S = False
                 if SC > 50:
                     SC_Candle_S = True
-        
-        EMAALB = (data['ema5'][i] - data['ema21'][i])/(data['ema21'][i] - data['ema55'][i])
-        EMAALS = (data['ema55'][i] - data['ema21'][i])/(data['ema21'][i] - data['ema5'][i]) 
-        
-        EMAALrangeB = (((EMAALB >= 0.381 and EMAALB <= 2.22) and (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100)) or (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100))
+
+        EMAALB = (row['ema5'] - row['ema21']) / (row['ema21'] - row['ema55'])
+        EMAALS = (row['ema55'] - row['ema21']) / (row['ema21'] - row['ema5'])
+
+        EMAALrangeB = (((EMAALB >= 0.381 and EMAALB <= 2.22) and (row['cci34_1W'] >= 100 and row['cci34_1D'] >= 100)) or (row['cci34_1W'] >= 100 and row['cci34_1D'] >= 100))
         EMAALrangeB = 1 if EMAALrangeB else 0
-        EMAALrangeB1 = ((data['cci34_1W'][i] > -70 and data['cci34_1D'][i] >= 100) or (data['cci34_1W'][i] > 70 and data['cci34_1D'][i] >= 0))
+        EMAALrangeB1 = ((row['cci34_1W'] > -70 and row['cci34_1D'] >= 100) or (row['cci34_1W'] > 70 and row['cci34_1D'] >= 0))
         EMAALrangeB1 = 1 if EMAALrangeB1 else 0
-        EMAALrangeB2 = ((EMAALB >= 0.381 and EMAALB <= 2.5) and (data['cci34_1W'][i] >= 100 and data['cci34_1D'][i] >= 100))
+        EMAALrangeB2 = ((EMAALB >= 0.381 and EMAALB <= 2.5) and (row['cci34_1W'] >= 100 and row['cci34_1D'] >= 100))
         EMAALrangeB2 = 1 if EMAALrangeB2 else 0
-        EMAALrangeS = (((EMAALS >= 0.381 and EMAALS <= 2.22) and (data['cci34_1W'][i] <= 100 and data['cci34_1D'][i] <= -100)) or (data['cci34_1W'][i] <= -100 and data['cci34_1D'][i] <= -100))
+        EMAALrangeS = (((EMAALS >= 0.381 and EMAALS <= 2.22) and (row['cci34_1W'] <= 100 and row['cci34_1D'] <= -100)) or (row['cci34_1W'] <= -100 and row['cci34_1D'] <= -100))
         EMAALrangeS = 1 if EMAALrangeS else 0
-        EMAALrangeS1 = ((data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= -100) or (data['cci34_1W'][i] < 70 and data['cci34_1D'][i] <= 0))
+        EMAALrangeS1 = ((row['cci34_1W'] < 70 and row['cci34_1D'] <= -100) or (row['cci34_1W'] < 70 and row['cci34_1D'] <= 0))
         EMAALrangeS1 = 1 if EMAALrangeS1 else 0
 
-        # if SC_Candle_B and (EMAALrangeB or EMAALrangeB1) and flag_short == False and flag_long == False :
-        if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False :
-       # if EMAALrangeB2 and flag_long == False :    
-            buy_list.append(data['Close'][i])
+        if ((SC_Candle_B and (EMAALrangeB or EMAALrangeB1)) or (EMAALrangeB2)) and flag_long == False:
+            buy_list.append(row['Close'])
             sell_list.append(np.nan)
             flag_long = True
             fresh_long = True
             if EMAALrangeB2:
                 entry_type.append("Golden entry")
+            elif EMAALrangeB1:
+                entry_type.append("Reversal entry")
             else:
                 entry_type.append(np.nan)
-            buy_entry.append("freshe buy")
+            buy_entry.append("fresh buy")
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-        elif SC_Candle_S and (EMAALrangeS or EMAALrangeS1) and flag_long == False and flag_short == False :
-            sell_list.append(data['Close'][i])
+        elif SC_Candle_S and (EMAALrangeS or EMAALrangeS1) and flag_long == False and flag_short == False:
+            sell_list.append(row['Close'])
             buy_list.append(np.nan)
             flag_short = True
             fresh_short = True
@@ -167,8 +267,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             buy_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-        elif flag_short == True and (((data['ema5'][i] > data['ema21'][i]) or data['cci34_1D'][i] >= 0 ) and data['cci34_1W'][i] > -100):
-            sell_list.append(data['Close'][i])
+        elif flag_short == True and ((row['ema5'] > row['ema21']) or row['cci34_1D'] >= 0):
+            sell_list.append(row['Close'])
             buy_list.append(np.nan)
             flag_short = False
             exit_sell.append("Exit sell")
@@ -176,8 +276,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             exit_buy.append(np.nan)
             buy_entry.append(np.nan)
             sell_entry.append(np.nan)
-        elif flag_long == True and (((data['ema5'][i] < data['ema21'][i]) or data['cci34_1D'][i] <= 0 ) and data['cci34_1W'][i] < 100):
-            sell_list.append(data['Close'][i])
+        elif flag_long == True and ((row['ema5'] < row['ema21']) or row['cci34_1D'] <= 0):
+            sell_list.append(row['Close'])
             buy_list.append(np.nan)
             flag_long = False
             exit_buy.append("Exit buy")
@@ -193,7 +293,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
             sell_entry.append(np.nan)
             exit_buy.append(np.nan)
             exit_sell.append(np.nan)
-    return (data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
+    return data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell, entry_type
+
 def main():
     csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
     # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
@@ -221,7 +322,7 @@ def run_program2():
 if __name__ == "__main__":
     buy_data = []
     sell_data = []
-    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry.csv'
+    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry_check.csv'
     Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
     # Buy_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Buy_Entry.csv'
     # Sell_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Sell_Entry.csv'
@@ -259,5 +360,5 @@ if __name__ == "__main__":
     end_time = time.time()
     total_time = end_time - start_time
 
-    print(f"Total runtime: {total_time:.2f} seconds")
+    print(f"Total runtime: {total_time / 60:.2f} minutes")
     print("Report generation complete.")

@@ -10,7 +10,7 @@ def analyze_stock(stock, data):
     try:
         for index, row in data.iterrows():    
             # print(" complete row details :", row)
-            if row['Buy_Entry'] == 'freshe buy':
+            if row['Buy_Entry'] == 'fresh buy':
                         entry_close = row['Close']
                         entry_date = row['Date_new']
                         ema5 = row['ema5']
@@ -24,7 +24,7 @@ def analyze_stock(stock, data):
                         checkprob = ''
                         if ((ema5 > ema21) and (ema21 > ema55)) and (cci341d > 100 and cci341w > 100):
                              goldentry = "Golden entry"
-                        elif ((ema5 > ema21) and (ema21 > ema55)) and (cci341d > 70 and cci341w > 100):
+                        elif ((ema5 > ema21) and (ema21 > ema55)) and (cci341w > 70 and cci341d > 100):
                              Highprob = "High probability"
                         else:
                              checkprob = "check the chart" 
@@ -71,7 +71,7 @@ def analyze_stock(stock, data):
                                                 'Exit Date': sell_date,
                                                 'Profit': profit,
                                                 'PH 10%': profit_percent,
-                                                'Comment':"Profit HIT",
+                                                'Comment':comment,
                                                 'Entry Type': entrytype
                                             }
                                 report_data.append(new_record)
@@ -79,6 +79,7 @@ def analyze_stock(stock, data):
                         else:
                             last_row = data.iloc[-1]  # Get the last row of the DataFrame
                             last_close = last_row['Close']
+                            
                             # if last_close > entry_close:
                             pnl = last_close - entry_close
                             # else:
@@ -95,7 +96,39 @@ def analyze_stock(stock, data):
                                             'In Progress PNL%': profit_percent
                                         }
                             report_data.append(new_record)
-                            
+                            # if entry_close > last_close:
+                            #     loss = entry_close - last_close
+                            #     loss_percent = (last_close / entry_close - 1) * 100
+                            #     comment = "SL HIT" if loss_percent <= -10 else "Indicator Exit"
+                            #     new_record = {
+                            #                 'Stock Name': stock,
+                            #                 'Entry price': entry_close,
+                            #                 'Entry Date': entry_date,
+                            #                 'Exit Price': last_close,
+                            #                 'Exit Date': sell_date,
+                            #                 'Loss': loss,
+                            #                 'LH 5%': (100 - (entry_close / last_close ) * 100),
+                            #                 'Comment':comment,
+                            #                 'Entry Type': entrytype
+                                    
+                            #             }
+                            #     report_data.append(new_record)
+                            # elif entry_close < last_close:
+                            #     profit = last_close - entry_close
+                            #     profit_percent = (last_close / entry_close - 1) * 100
+                            #     comment = "Profit HIT" if profit_percent >= 20 else "Indicator Exit"
+                            #     new_record = {
+                            #                     'Stock Name': stock,
+                            #                     'Entry price': entry_close,
+                            #                     'Entry Date': entry_date,
+                            #                     'Exit Price': last_close,
+                            #                     'Exit Date': sell_date,
+                            #                     'Profit': profit,
+                            #                     'PH 10%': profit_percent,
+                            #                     'Comment':"Profit HIT",
+                            #                     'Entry Type': entrytype
+                            #                 }
+                            #     report_data.append(new_record)
                         # sell_row = row
                         # for idx, sell_row in data.iloc[index:].iterrows():
                         #     sell_close = sell_row['Close']
@@ -190,7 +223,7 @@ def import_stock_symbols_from_csv(filename):
 
 if __name__ == "__main__":
     
-    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d30-08-2023__update.csv'
+    report_gen = 'C:/Users/muniv/Desktop/Market/marketdata_analysis/Reports_gen_multi_d30-08-2023__Test.csv'
     # report_gen = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Reports_gen_multi_d25-08-2023.csv'
     start_time = time.time()
     csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
@@ -229,5 +262,5 @@ if __name__ == "__main__":
     end_time = time.time()
     total_time = end_time - start_time
 
-    print(f"Total runtime: {total_time:.2f} seconds")
+    print(f"Total runtime: {total_time / 60:.2f} minutes")
     print("Report generation complete.")
