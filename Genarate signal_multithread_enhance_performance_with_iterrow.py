@@ -20,10 +20,10 @@ def process_stock(stock):
         exit_sell = []
         buy_list = []
         sell_list = []
-        data = pd.read_csv('C:/Users/muniv/Desktop/Market/Compare_multi/{}.csv'.format(stock)) 
-        out_file_name1 = 'C:/Users/muniv/Desktop/Market/Signals_multi/{}.csv'.format(stock)        
-        # data = pd.read_csv('/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Compare_multi/{}.csv'.format(stock)) 
-        # out_file_name1 = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{}.csv'.format(stock)      
+        # data = pd.read_csv('C:/Users/muniv/Desktop/Market/Compare_multi/{}.csv'.format(stock)) 
+        # out_file_name1 = 'C:/Users/muniv/Desktop/Market/Signals_multi/{}.csv'.format(stock)        
+        data = pd.read_csv('/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Compare_multi/{}.csv'.format(stock)) 
+        out_file_name1 = '/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Signals_multi/{}.csv'.format(stock)      
         buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell,entry_type)
         #report_performance(data)
         print("Name of the stock : ",stock)
@@ -296,8 +296,8 @@ def buy_sell_function(data, buy_list, sell_list, buy_entry, sell_entry, exit_buy
     return data, buy_list, sell_list, buy_entry, sell_entry, exit_buy, exit_sell, entry_type
 
 def main():
-    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
-    # csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
+    # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     # stock_symbols = ['CHEMPLASTS.NS']
     print("Script starting")
@@ -322,10 +322,10 @@ def run_program2():
 if __name__ == "__main__":
     buy_data = []
     sell_data = []
-    Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry_check.csv'
-    Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
-    # Buy_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Buy_Entry.csv'
-    # Sell_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Sell_Entry.csv'
+    # Buy_result_data='C:/Users/muniv/Desktop/Market/Buy_Entry_check.csv'
+    # Sell_result_data='C:/Users/muniv/Desktop/Market/Sell_Entry.csv'
+    Buy_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Buy_Entry.csv'
+    Sell_result_data='C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/Sell_Entry.csv'
     start_time = time.time()
     # Load existing Buy result data if it exists
     try:

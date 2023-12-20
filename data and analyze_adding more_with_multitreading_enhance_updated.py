@@ -11,13 +11,16 @@ def import_stock_symbols_from_csv(filename):
 def process_stock(stock):
     try:
         # Load data for processing
-        data = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock))
-        data1 = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock))
+        # data = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock))
+        # data1 = pd.read_csv('C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock))
+        data = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock))
+        data1 = pd.read_csv('C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock))
         print("stock name : ",stock)              
         # Save processed data
-        out_file_name1 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock)
-        out_file_name2 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock)
-
+        # out_file_name1 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426/{}.csv'.format(stock)
+        # out_file_name2 = 'C:/Users/muniv/Desktop/Market/Nifty_A1426_weekly/{}.csv'.format(stock)
+        out_file_name1 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All/{}.csv'.format(stock)
+        out_file_name2 = 'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/Nifty_All_weekly/{}.csv'.format(stock)
         data['ema5']  = talib.ema(data['Close'], length=5)
         data['ema21']  = talib.ema(data['Close'], length=21)
         data['ema55']  = talib.ema(data['Close'], length=55)
@@ -57,7 +60,8 @@ def process_stocks(stock_symbols):
     return processed_data
 
 if __name__ == "__main__":
-    csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    # csv_file_path = r'C:\Users\muniv\Desktop\Market\marketdata_analysis\stock_symbols.csv'
+    csv_file_path = r'C:/Users/mvadlamudi/Desktop/activity/QuantAnalysis/marketdata_analysis/stock_symbols.csv' #mainlap
     stock_symbols = import_stock_symbols_from_csv(csv_file_path)
     processed_data = process_stocks(stock_symbols)
     print("Processing complete.")
