@@ -357,7 +357,7 @@ if __name__ == "__main__":
     # subprocess.run(["python", "Report_generation_multi_enhance.py"])
     subprocess.run(["python", "Report_generation_multi_enhance_without_inner_for loop.py"])
     subprocess.run(["python", "Adding Trading view link to report.py"])
-    # subprocess.run(["python", "Gmail_with_attachments_without_manual.py"])
+    subprocess.run(["python", "gmail_report_with_body_data_for_last_2days_update.py"])
     end_time = time.time()
     total_time = end_time - start_time
 
